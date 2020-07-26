@@ -1,6 +1,7 @@
 import React from 'react'
 import MovieCard from './MovieCard'
 import {Row,Col} from 'react-bootstrap'
+
 export default function MovieBoard(props) {
 
     let movieList = props.movieList
@@ -8,7 +9,7 @@ export default function MovieBoard(props) {
     return (
         <Row>
             {movieList.map(item => {return(
-            <Col md={3}>
+            <Col md={4} className="columnStyle">
             <MovieCard movie={item}/>
             </Col> 
             )})}
