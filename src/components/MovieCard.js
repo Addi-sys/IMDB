@@ -13,6 +13,7 @@ export default function MovieCard(props) {
     const apikey = process.env.REACT_APP_APIKEY
 
     let vidId = item.id
+    let vidLink = ''
 
     // console.log(vidId)
 
@@ -21,9 +22,10 @@ export default function MovieCard(props) {
         let result = await fetch(url)
         let vidData = await result.json()
 
-        let vidLink = `https://www.youtube.com/watch?v=${vidData.results[0].key}`
+        vidLink = `https://www.youtube.com/watch?v=${vidData.results[0].key}`
 
-        console.log(vidLink)
+        return vidLink
+        // console.log(vidLink)
 
     }
     return (
@@ -52,6 +54,7 @@ export default function MovieCard(props) {
             </Card>
 
             <VideoModal
+                video={vidLink}
                 show={modalShow}
                 onHide={() => setModalShow(false)}
             />

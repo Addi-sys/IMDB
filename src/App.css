@@ -3,23 +3,59 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    color: white;
 }
 
-.jumbotron{
-    background-image: url('/suicidesquad.jpeg');
-    background-position: center;
-    max-width: 1280px;
-    height: 720px;
-    background-repeat: no-repeat; 
-    background-size: cover;
-}
-
-.col{
-    border: 1px solid white;
-}
-
-.container{
+.row{
     display: flex;
-    /* justify-content: center;
-    flex-wrap: wrap; */
+    justify-content: space-between;
+}
+
+.columnStyle{
+    padding-top: 25px;
+    /* padding-bottom: 15px; */
+}
+
+.card-title{
+    text-align: center;
+    color: white;
+    padding-top: 15%;
+}
+
+.overview{
+    text-align: center;
+    color: white;
+}
+
+.overview>p{
+    padding-top: 10%;
+}
+
+.extra{
+    color: white;
+    font-size: medium;
+    padding: 10%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cardBody{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+}
+
+.card-body{ 
+    background-color: black;
+    
+}
+
+.card{
+    border: none;
+}
+
+.pagination{
+    display: flex;
+    justify-content: center;
+    padding-bottom: 30%;
 }

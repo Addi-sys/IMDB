@@ -1,0 +1,25 @@
+use search of navbar (formcontrol)
+
+1) onChange={(e"event")=>searchByKeyword(e)}
+
+
+e.target.value
+
+2) const searchByKeyword = (e) => {
+  let filteredlist =  originalList.filter(move => movie.includes(e.target.value))
+
+
+  setMovieList(filteredlist)
+
+  // let api
+}
+
+
+3) in app()
+
+let [originalList, setOriginalList = useState(null)]
+
+4) in callMovie()
+
+setOriginalList(data, results)
+
