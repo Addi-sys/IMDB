@@ -90,6 +90,8 @@ function App() {
     let result = await fetch(url)
     let data = await result.json()
 
+    console.log('link', url)
+
     console.log("genres", data)
 
     setGenres(data.genres)
@@ -125,26 +127,27 @@ function App() {
   return (
     <div className="App body">
 
-      <Navbar bg="dark" variant="dark" className="nav-style">
+      <Navbar fixed='top' bg="transparent" variant="dark" className="navbar-expand-lg">
         <NavDropdown title="Sort Movies" id="basic-nav-dropdown">
-          <NavDropdown.Item href="#action/3.1" onClick={() => sortByPopularity('asc')} >Most Popular</NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.2" onClick={() => sortByPopularity('dsc')} >Least Popular</NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.3" onClick={() => sortByRating('asc')} >Best Rated</NavDropdown.Item>
-          <NavDropdown.Item href="#action/3.3" onClick={() => sortByRating('dsc')} >Worst Rated</NavDropdown.Item>
+          <NavDropdown.Item style={{color: 'red', fontWeight: 'bold'}} href="#action/3.1" onClick={() => sortByPopularity('asc')} >Most Popular</NavDropdown.Item>
+          <NavDropdown.Item style={{color: 'red', fontWeight: 'bold'}} href="#action/3.2" onClick={() => sortByPopularity('dsc')} >Least Popular</NavDropdown.Item>
+          <NavDropdown.Item style={{color: 'red', fontWeight: 'bold'}} href="#action/3.3" onClick={() => sortByRating('asc')} >Best Rated</NavDropdown.Item>
+          <NavDropdown.Item style={{color: 'red', fontWeight: 'bold'}} href="#action/3.3" onClick={() => sortByRating('dsc')} >Worst Rated</NavDropdown.Item>
         </NavDropdown>
-        <Navbar.Brand href="#home">MovieBase</Navbar.Brand>
+
+        <Navbar.Brand style={{color: 'yellow', fontWeight: 'bold'}} href="#home">MovieBase</Navbar.Brand>
 
         <Nav className="mr-auto">
-          <Nav.Link onClick={() => categorySort('latest')} href="#home">Latest</Nav.Link>
-          <Nav.Link onClick={() => categorySort('now_playing')} href="#home">Now Playing</Nav.Link>
-          <Nav.Link onClick={() => categorySort('popular')} href="#home">Popular</Nav.Link>
-          <Nav.Link onClick={() => categorySort('top_rated')} href="#home">Top Rated</Nav.Link>
-          <Nav.Link onClick={() => categorySort('upcoming')} href="#home">Upcoming</Nav.Link>
+          <Nav.Link style={{color: 'red', fontWeight: 'bold'}} onClick={() => categorySort('latest')} href="#home">Latest</Nav.Link>
+          <Nav.Link style={{color: 'red', fontWeight: 'bold'}} onClick={() => categorySort('now_playing')} href="#home">Now Playing</Nav.Link>
+          <Nav.Link style={{color: 'red', fontWeight: 'bold'}} onClick={() => categorySort('popular')} href="#home">Popular</Nav.Link>
+          <Nav.Link style={{color: 'red', fontWeight: 'bold'}} onClick={() => categorySort('top_rated')} href="#home">Top Rated</Nav.Link>
+          <Nav.Link style={{color: 'red', fontWeight: 'bold'}} onClick={() => categorySort('upcoming')} href="#home">Upcoming</Nav.Link>
 
         </Nav>
         <Form inline>
           <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(e) => searchByKeyword(e)} />
-          <Button variant="outline-info">Search</Button>
+          <Button variant="outline-warning">Search</Button>
         </Form>
       </Navbar>
       <CarouselSection />

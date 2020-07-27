@@ -1,37 +1,37 @@
-.body{
-    background-color: black;
+.body {
+    background-color: rgb(1, 1, 15);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     color: white;
 }
 
-.row{
+.row {
     display: flex;
     justify-content: space-between;
 }
 
-.columnStyle{
+.columnStyle {
     padding-top: 25px;
     /* padding-bottom: 15px; */
 }
 
-.card-title{
+.card-title {
     text-align: center;
     color: white;
     padding-top: 15%;
 }
 
-.overview{
+.overview {
     text-align: center;
     color: white;
 }
 
-.overview>p{
+.overview>p {
     padding-top: 10%;
 }
 
-.extra{
+.extra {
     color: white;
     font-size: medium;
     padding: 10%;
@@ -39,23 +39,35 @@
     justify-content: space-between;
 }
 
-.cardBody{
+.cardBody {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; 
+    justify-content: space-between;
 }
 
-.card-body{ 
+.card-body {
     background-color: black;
-    
 }
 
-.card{
+.card {
     border: none;
 }
 
-.pagination{
+.pagination {
     display: flex;
     justify-content: center;
     padding-bottom: 30%;
+}
+
+.nav-link>a {
+    color: white;
+}
+
+#basic-nav-dropdown {
+    color: red;
+    font-weight: bold;
+}
+
+.dropdown-menu.show {
+    background: rgba(1, 1, 15, 0.432);
 }
