@@ -1,31 +1,32 @@
-import React from 'react'
-import { Card } from 'react-bootstrap'
+import React , {useState} from 'react'
+import { Card, Badge } from 'react-bootstrap'
 import { MDBView, MDBMask } from 'mdbreact'
 import VideoModal from './VideoModal'
 
-export default function MovieCard(props) {
+export default function MovieCard({movie, genres }) {
 
     let [modalShow, setModalShow] = React.useState(false)
+    let  [vidLink, setVidLink]= useState('')
 
-    let item = props.movie
-    let imageURL = `https://image.tmdb.org/t/p/w220_and_h330_face${item.poster_path}`
+    let imageURL = `https://image.tmdb.org/t/p/w220_and_h330_face${movie.poster_path}`
 
     const apikey = process.env.REACT_APP_APIKEY
 
-    let vidId = item.id
-    let vidLink = ''
+    let vidId = movie.id
 
     // console.log(vidId)
 
     const video = async (vidId) => {
+        
         let url = `https://api.themoviedb.org/3/movie/${vidId}/videos?api_key=${apikey}&language=en-US`
         let result = await fetch(url)
         let vidData = await result.json()
 
-        vidLink = `https://www.youtube.com/watch?v=${vidData.results[0].key}`
+        let link = `https://www.youtube.com/embed/${vidData.results[0].key}`  
 
-        return vidLink
-        // console.log(vidLink)
+        // return vidLink
+        console.log("vvv",vidLink)
+        setVidLink(link)
 
     }
     return (
@@ -38,14 +39,23 @@ export default function MovieCard(props) {
                         <MDBMask overlay="black-strong">
                             <Card.Text className="cardContent">
                                 <Card.Title>
-                                    <h3>{item.title}</h3>
+                                    <h3>{movie.title}</h3>
                                 </Card.Title>
                                 <div className='overview'>
-                                    <p>{item.overview}</p>
+                                    <p>{movie.overview}</p>
                                 </div>
                                 <div className="extra">
-                                    <span>Release Date: {item.release_date}</span>
-                                    <span>Score: {item.vote_average}</span>
+                                    <span>Release Date: {movie.release_date}</span>
+                                    <span>Score: {movie.vote_average}</span>
+                                </div>
+                                <div>
+                                    {movie.genre_ids.map((genre) => {
+                                        return (
+                                            <Badge variant="danger" style={{marginRight: '10px'}}>
+                                                {genres.find((item) => item.id === genre).name}
+                                            </Badge>
+                                        )
+                                    })}
                                 </div>
                             </Card.Text>
                         </MDBMask>

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-input-range/lib/css/index.css'
 import Pagination from "react-js-pagination";
 import MovieBoard from './components/MovieBoard';
 import CarouselSection from './components/CarouselSection';
-import { Container, Navbar, Nav, Form, Button, FormControl , NavDropdown} from 'react-bootstrap';
+import { Container, Navbar, Nav, Form, Button, FormControl, NavDropdown, Col, Row } from 'react-bootstrap';
+import FilterBoard from './components/FilterBoard'
 
 const apikey = process.env.REACT_APP_APIKEY
 
@@ -14,6 +16,10 @@ function App() {
   let [movieList, setMovieList] = useState(null)
   let [originalList, setOriginalList] = useState(null)
   let [activePage, setActivePage] = useState(1)
+  let [year, setYear] = useState({ min: 1980, max: 2020 })
+  let [rating, setRating] = useState({ min: 0, max: 10 })
+  let [totalResult, setTotalResult] = useState(0)
+  let [genres, setGenres] = useState(null)
 
   // fetch API and save as data object
   const callApi = async (page) => {
@@ -24,16 +30,70 @@ function App() {
 
     setOriginalList(data.results)
     setMovieList(data.results)
+    setTotalResult(data.total_results)
   }
 
-  const categorySort = async(category) => {
+  const sortByPopularity = (direction) => {
+    let sortedList
+
+    if (direction === 'asc') {
+      sortedList = movieList.sort((a, b) => a.popularity - b.popularity)
+    } else {
+      sortedList = movieList.sort((a, b) => b.popularity - a.popularity)
+    }
+    setMovieList([...sortedList])
+  }
+
+  const sortByRating = (direction) => {
+    let sortedList
+
+    if (direction === 'dsc') {
+      sortedList = movieList.sort((a, b) => a.vote_average - b.vote_average)
+    } else {
+      sortedList = movieList.sort((a, b) => b.vote_average - a.vote_average)
+    }
+    setMovieList([...sortedList])
+  }
+
+  const filterByRate = (value) => {
+    let filteredList = originalList.filter((movie) =>
+      movie.vote_average > value.min && movie.vote_average < value.max
+    )
+    setRating(value)
+    setMovieList(filteredList)
+    setTotalResult(filteredList.total_results)
+  }
+
+  const filterByYear = (value) => {
+    let filteredList = originalList.filter((movie) => {
+      let year = parseInt(movie.release_date.split('-')[0])
+      return year > value.min && year < value.max
+    })
+    setYear(value)
+    setMovieList(filteredList)
+    setTotalResult(filteredList.total_results)
+  }
+
+  const categorySort = async (category) => {
     let url = `https://api.themoviedb.org/3/movie/${category}?api_key=${apikey}&language=en-US&page=1`
     let result = await fetch(url)
     let data = await result.json()
 
-    console.log('categories',data)
-
+    console.log('categories', data)
     setMovieList(data.results)
+    setTotalResult(data.total_results)
+
+  }
+
+  const getGenre = async () => {
+    let url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${apikey}&language=en-US`
+    let result = await fetch(url)
+    let data = await result.json()
+
+    console.log("genres", data)
+
+    setGenres(data.genres)
+    callApi()
   }
 
   const handlePageChange = (pageNum) => {
@@ -46,12 +106,14 @@ function App() {
       movie.title.includes(e.target.value)
     );
     setMovieList(filteredList);
+    setTotalResult(filteredList.total_results)
   };
 
   // Mounts new states as changes are made
   useEffect(() => {
-    callApi(activePage)
-  }, [])
+    getGenre()
+  // eslint-disable-next-line
+  },[])
 
   // Loading screen
   if (movieList == null) {
@@ -65,15 +127,19 @@ function App() {
 
       <Navbar bg="dark" variant="dark" className="nav-style">
         <NavDropdown title="Sort Movies" id="basic-nav-dropdown">
-          <NavDropdown.Item onClick={() => categorySort('latest')} href="#action/3.1">Get Latest Movies</NavDropdown.Item>
-          <NavDropdown.Item onClick={() => categorySort('now_playing')} href="#action/3.2">Get Now Playing Movies</NavDropdown.Item>
-          <NavDropdown.Item onClick={() => categorySort('popular')} href="#action/3.3">Get Popular Movies</NavDropdown.Item>
-          <NavDropdown.Item onClick={() => categorySort('top_rated')} href="#action/3.3">Get Top Rated Movies</NavDropdown.Item>
-          <NavDropdown.Item onClick={() => categorySort('upcoming')} href="#action/3.3">Get Upcoming Movies</NavDropdown.Item>
+          <NavDropdown.Item href="#action/3.1" onClick={() => sortByPopularity('asc')} >Most Popular</NavDropdown.Item>
+          <NavDropdown.Item href="#action/3.2" onClick={() => sortByPopularity('dsc')} >Least Popular</NavDropdown.Item>
+          <NavDropdown.Item href="#action/3.3" onClick={() => sortByRating('asc')} >Best Rated</NavDropdown.Item>
+          <NavDropdown.Item href="#action/3.3" onClick={() => sortByRating('dsc')} >Worst Rated</NavDropdown.Item>
         </NavDropdown>
         <Navbar.Brand href="#home">MovieBase</Navbar.Brand>
+
         <Nav className="mr-auto">
-          <Nav.Link href="#home">Home</Nav.Link>
+          <Nav.Link onClick={() => categorySort('latest')} href="#home">Latest</Nav.Link>
+          <Nav.Link onClick={() => categorySort('now_playing')} href="#home">Now Playing</Nav.Link>
+          <Nav.Link onClick={() => categorySort('popular')} href="#home">Popular</Nav.Link>
+          <Nav.Link onClick={() => categorySort('top_rated')} href="#home">Top Rated</Nav.Link>
+          <Nav.Link onClick={() => categorySort('upcoming')} href="#home">Upcoming</Nav.Link>
 
         </Nav>
         <Form inline>
@@ -83,15 +149,26 @@ function App() {
       </Navbar>
       <CarouselSection />
       <Container>
+        <Row style={{ marginTop: '40px', marginLeft: '40px' }}>
+          <Col md={3}>
+            <FilterBoard
+              filterByYear={filterByYear}
+              filterByRate={filterByRate}
+              year={year}
+              rating={rating}
+            />
+          </Col>
 
-        <MovieBoard movieList={movieList} />
-
+          <Col md={9}>
+            <MovieBoard movieList={movieList} genres={genres} />
+          </Col>
+        </Row>
       </Container>
 
       <Pagination
         activePage={activePage}
         itemsCountPerPage={10}
-        totalItemsCount={100}
+        totalItemsCount={totalResult}
         pageRangeDisplayed={5}
         onChange={(pageNum) => handlePageChange(pageNum)}
         itemClass="page-item"

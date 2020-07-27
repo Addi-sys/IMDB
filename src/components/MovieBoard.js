@@ -1,18 +1,19 @@
 import React from 'react'
 import MovieCard from './MovieCard'
-import {Row,Col} from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 
-export default function MovieBoard(props) {
+export default function MovieBoard({movieList, genres}) {
 
-    let movieList = props.movieList
-    
+
     return (
         <Row>
-            {movieList.map(item => {return(
-            <Col md={4} className="columnStyle">
-            <MovieCard movie={item}/>
-            </Col> 
-            )})}
+            {movieList.map((item) => {
+                return (
+                    <Col md={4} className="columnStyle">
+                        <MovieCard movie={item} genres={genres} />
+                    </Col>
+                )
+            })}
         </Row>
     )
 }

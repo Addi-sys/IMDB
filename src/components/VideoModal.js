@@ -2,6 +2,7 @@ import React from 'react'
 import { Modal, Button } from 'react-bootstrap'
 
 export default function VideoModal(props) {
+    console.log("dddd",props.video)
 
     return (
         <div>
@@ -18,7 +19,8 @@ export default function VideoModal(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe title="video" class="embed-responsive-item" src={props.vidLink} allowfullscreen></iframe>
+                        
+    <iframe title="video" class="embed-responsive-item" src={props.video} allowfullscreen style={{border:"1px solid black"}}> </iframe>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
